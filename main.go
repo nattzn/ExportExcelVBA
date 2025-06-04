@@ -19,6 +19,12 @@ type FileEntry struct {
 }
 
 func main() {
+	// コマンドライン引数で出力先ディレクトリを指定
+	outDir := "exported"
+	if len(os.Args) > 1 {
+		outDir = os.Args[1]
+	}
+
 	// .xlsm ファイル一覧取得
 	dir, _ := os.Getwd()
 	entries, _ := os.ReadDir(dir)
@@ -46,7 +52,6 @@ func main() {
 		fmt.Println("選択ファイル:", selected.FullPath)
 
 		// 出力先ディレクトリ
-		outDir := "vba_export"
 		out_path, err := filepath.Abs(outDir)
 		if err != nil {
 			log.Fatalf("出力ディレクトリの絶対パス取得に失敗: %v", err)
