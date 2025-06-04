@@ -111,12 +111,21 @@ func runTUI(filesList []FileEntry) int {
 			}
 		case tcell.KeyEnter:
 			app.Stop()
+		}
+		update()
+		return nil
+	})
+
+	app.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
+		switch event.Key() {
+		case tcell.KeyCtrlC:
+			cursor = -1
+			app.Stop()
 		case tcell.KeyEscape:
 			cursor = -1
 			app.Stop()
 		}
-		update()
-		return nil
+		return event
 	})
 
 	if err := app.SetRoot(textView, true).Run(); err != nil {
