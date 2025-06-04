@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -19,11 +20,9 @@ type FileEntry struct {
 }
 
 func main() {
-	// コマンドライン引数で出力先ディレクトリを指定
-	outDir := "exported"
-	if len(os.Args) > 1 {
-		outDir = os.Args[1]
-	}
+	// フラグで出力先ディレクトリを指定
+	outDir := flag.String("d", "exported", "出力先ディレクトリ")
+	flag.Parse()
 
 	// .xlsm ファイル一覧取得
 	dir, _ := os.Getwd()
@@ -52,7 +51,7 @@ func main() {
 		fmt.Println("選択ファイル:", selected.FullPath)
 
 		// 出力先ディレクトリ
-		out_path, err := filepath.Abs(outDir)
+		out_path, err := filepath.Abs(*outDir)
 		if err != nil {
 			log.Fatalf("出力ディレクトリの絶対パス取得に失敗: %v", err)
 		}
