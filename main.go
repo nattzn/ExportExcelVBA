@@ -189,14 +189,14 @@ func exportVBA(path string, out_path string) {
 		}
 		typeVal := int(typeRaw.Val)
 		// ファイル拡張子の決定
-		ext := ".bas" // fallback シートモジュールなど
+		ext := ".vbs" // fallback シートモジュールなど
 		switch typeVal {
 		case 1:
-			ext = ".bas" // 標準モジュール
+			ext = ".bas.vbs" // 標準モジュール
 		case 2:
-			ext = ".cls" // クラスモジュール
+			ext = ".cls.vbs" // クラスモジュール
 		case 3:
-			ext = ".frm" // フォーム
+			ext = ".frm.vbs" // フォーム
 		default:
 			// 続行
 		}
