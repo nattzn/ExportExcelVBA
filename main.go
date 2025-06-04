@@ -19,9 +19,27 @@ type FileEntry struct {
 	FullPath string
 }
 
+func printUsage() {
+	exePath, err := os.Executable()
+	if err != nil {
+		exePath = os.Args[0]
+	}
+	exeName := filepath.Base(exePath)
+	exeNameNoExt := exeName[:len(exeName)-len(filepath.Ext(exeName))]
+
+	fmt.Println("Usage:")
+	fmt.Printf("  %s [-d 出力先ディレクトリ]\n", exeNameNoExt)
+	fmt.Println("Option:")
+	fmt.Println("  -d string")
+	fmt.Println("    	出力先ディレクトリ (デフォルト: exported)")
+	fmt.Println("  -h, --help")
+	fmt.Println("    	このヘルプを表示")
+}
+
 func main() {
 	// フラグで出力先ディレクトリを指定
 	outDir := flag.String("d", "exported", "出力先ディレクトリ")
+	flag.Usage = printUsage
 	flag.Parse()
 
 	// .xlsm ファイル一覧取得
