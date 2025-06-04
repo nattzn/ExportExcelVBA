@@ -181,11 +181,24 @@ func exportVBA(path string, out_path string) {
 		}
 		name := nameRaw.ToString()
 
-		// 標準モジュールのみ対象 (Type == 1)
+		// モジュール種別の取得（Type）
 		typeRaw, err := oleutil.GetProperty(comp, "Type")
-		if err != nil || int(typeRaw.Val) != 1 {
+		if err != nil {
 			comp.Release()
 			continue
+		}
+		typeVal := int(typeRaw.Val)
+		// ファイル拡張子の決定
+		ext := ".bas" // fallback シートモジュールなど
+		switch typeVal {
+		case 1:
+			ext = ".bas" // 標準モジュール
+		case 2:
+			ext = ".cls" // クラスモジュール
+		case 3:
+			ext = ".frm" // フォーム
+		default:
+			// 続行
 		}
 
 		codeModRaw, err := oleutil.GetProperty(comp, "CodeModule")
@@ -220,7 +233,7 @@ func exportVBA(path string, out_path string) {
 		code := codeRaw.ToString()
 
 		// 書き込み
-		filename := filepath.Join(out_path, name+".bas")
+		filename := filepath.Join(out_path, name+ext)
 		err = os.WriteFile(filename, []byte(code), 0644)
 		if err == nil {
 			fmt.Println("出力:", filename)
