@@ -215,16 +215,14 @@ func exportVBA(path string, out_path string) {
 		}
 		typeVal := int(typeRaw.Val)
 		// ファイル拡張子の決定
-		ext := ".vbs" // fallback シートモジュールなど
+		ext := ".dcm" // シートモジュールなど
 		switch typeVal {
 		case 1:
-			ext = ".bas.vbs" // 標準モジュール
+			ext = ".bas" // 標準モジュール
 		case 2:
-			ext = ".cls.vbs" // クラスモジュール
+			ext = ".cls" // クラスモジュール
 		case 3:
-			ext = ".frm.vbs" // フォーム
-		default:
-			// 続行
+			ext = ".frm" // フォーム
 		}
 
 		codeModRaw, err := oleutil.GetProperty(comp, "CodeModule")
