@@ -130,6 +130,9 @@ func exportVBA(path string, out_path string) {
 	defer excelDisp.Release()
 
 	oleutil.PutProperty(excelDisp, "Visible", false)
+	oleutil.PutProperty(excelDisp, "EnableEvents", false)
+	oleutil.PutProperty(excelDisp, "DisplayAlerts", false)
+	oleutil.PutProperty(excelDisp, "AutomationSecurity", 3) // msoAutomationSecurityForceDisable
 
 	workbooksRaw, err := oleutil.GetProperty(excelDisp, "Workbooks")
 	if err != nil || workbooksRaw == nil {
